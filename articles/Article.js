@@ -1,5 +1,6 @@
-import Sequelize from "sequelize";
-import connection from "../database/database";
+const Sequelize = require("sequelize");
+const connection = require("../database/database");
+const Category = require("../categories/Category");
 
 const Article = connection.define('articles', {
     title: {
@@ -16,4 +17,10 @@ const Article = connection.define('articles', {
     }
 })
 
-export default Article;
+//Relacionamentos
+Category.hasMany(Article);
+Article.belongsTo(Category);
+
+//Article.sync({force: true});
+
+module.exports = Article;
