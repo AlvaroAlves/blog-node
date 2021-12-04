@@ -75,4 +75,39 @@ router.post('/articles/update', (req,res) => {
         res.redirect("/");
     })
 })
+
+router.get('/articles/page/:page', (req, res) =>{
+    let page = req.params.page;
+    const limit = 4;
+    let offset = 0;
+
+    if (!isNaN(page) && page != 1){
+        offset = parseInt(page-1) * limit;
+    }
+
+    Article.findAndCountAll({
+        limit: limit,
+        offset: offset,
+        order: [
+            ['id', 'DESC']
+        ]
+    }).then(articles => {
+        let next;
+        if (offset + limit >= articles.count)
+            next = false;
+        else
+            next = true;
+
+        Category.findAll().then(categories => {
+            let result = {
+                page: parseInt(page),
+                articles: articles,
+                next: next
+            }
+            res.render("admin/articles/page", {result: result, categories: categories})
+        })
+
+        
+    })
+})
 module.exports = router;
