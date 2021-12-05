@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser")
 const connection = require("./database/database")
+const session = require('express-session')
 
 const categoriesController = require("./categories/CategoriesController")
 const articlesController = require("./articles/ArticlesController")
@@ -14,6 +15,16 @@ const User = require("./users/User")
 
 //view engine
 app.set('view engine', 'ejs');
+
+//Session
+app.use(session({
+    secret: "compass-node",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 3000000
+    }
+}))
 
 //arquivos staticos
 app.use(express.static('public'));
@@ -44,7 +55,13 @@ app.get("/", (req, res) => {
         limit: 4
     }).then((articles) =>{
         Category.findAll().then(categories => {
-            res.render("index", {articles: articles, categories: categories});
+            User.count().then(registros => {
+                if (registros == 0)
+                    res.render("index", {articles: articles, categories: categories, showRegisterAdmin: true});
+                else
+                res.render("index", {articles: articles, categories: categories});
+            })
+            
         })
     })
 })
