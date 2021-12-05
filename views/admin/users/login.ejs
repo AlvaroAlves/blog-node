@@ -1,0 +1,27 @@
+<%- include('../../partials/header.ejs') %>
+
+<div class="container">
+    <hr>
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2>Entrar</h2>
+        </div>
+        <div class="card-body">
+            <form action="/authenticate" method="POST">
+                <input class="form-control" name="email" type="email" placeholder="insira seu email"><br>
+                <input type="password" class="form-control" name="password" placeholder="**********">
+                <% if(locals.err){ %>
+                    <div class="col-sm-3" >
+                        <small id="passwordHelp" class="text-danger">
+                            <%= locals.err %>
+                        </small>      
+                    </div>
+                    <% } %>
+                <br>
+                <button class="btn btn-success btn-block" type="submit">Entrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../../partials/footer.ejs') %>

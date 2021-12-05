@@ -16,5 +16,8 @@
     </ul>
     <% if(locals.showRegisterAdmin){ %>   
         <a  class="btn btn-success" href="admin/users/create">Criar Primeiro usuário</a>
+    <% }else{ %>
+        <a  class="btn btn-success" href="/admin/articles" style="margin-right: 10px;">Painel Administrativo</a>
+        <a  class="btn btn-success" href="/login">Entrar</a>
     <% } %>
 </nav>
